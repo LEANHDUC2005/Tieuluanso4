@@ -1,0 +1,5 @@
+| apple     | n    | qua tao     | This is an apple         |
+| write     | v    | viet        | She writes a letter      |
+| beautiful | adj  | dep         | She is beautiful         |
+| in        | pps  | trong       | The book is in the bag   |
+| I         | pn   | toi         | I love you               |
