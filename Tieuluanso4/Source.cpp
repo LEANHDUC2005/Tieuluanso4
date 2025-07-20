@@ -86,10 +86,10 @@ void themTu(tree* T)
 	tuDien a;
 	while (true)
 	{
-		printf("| Nhập từ ( nhập 0 để kết thúc ): ");
+		printf("| Nhập từ ( nhập 0 để kết thúc ): ");    // Nhap tu: nhap 0 de end
 		nhapChuoi(a.tu, sizeof(a.tu));
 		if(strcmp(a.tu, "0") == 0) return;
-		if (!kiemtrachu(a.tu))
+		if (!kiemtrachu(a.tu)) // neu tu chua ky tu so hoac ky tu dac biet
 		{
 			printf("| LỖI ! Tên từ không được chứa ký tự số (1-8) hay kí tự đặc biệt.\n");
 			continue;
@@ -101,16 +101,16 @@ void themTu(tree* T)
 			printf("| : ");
 			nhapChuoi(a.loaitu, sizeof(a.loaitu));
 			if (strcmp(a.loaitu, "0") == 0) return;
-			if (!kiemtraloaitu(a.loaitu))
-			{
+			if (!kiemtraloaitu(a.loaitu))  // neu loai tu ko dung voi dinh dang
+			{ 
 				printf("| LỖI ! Vui lòng nhập đúng loại từ\n");
 				continue;
 			}
 			break;
 		} while (true);
-		printf("| Nhập nghĩa của từ: ");
+		printf("| Nhập nghĩa của từ: "); // nhap nghia cua tu
 		nhapChuoi(a.nghia, sizeof(a.nghia));
-		printf("| Nhập ví dụ sử dụng từ trong các câu cụ thể: ");
+		printf("| Nhập ví dụ sử dụng từ trong các câu cụ thể: "); // nhap VD su dung
 		nhapChuoi(a.vidu, sizeof(a.vidu));
 		int res = InsertNode(T, a);
 		if (res == 0)
@@ -128,16 +128,22 @@ void themTu(tree* T)
 	}
 }
 //    - Tìm kiếm từ
-node* timTu(tree* T, char tucantim[])
+node* timTu(tree T, char tucantim[])
 {
-	if ((*T) == NULL) return NULL;
+	if (T == NULL) return NULL;
 	else
 	{
-		if (strcmp((*T)->data.tu, tucantim) == 0) return *T;
+		// x = T->data : tra ve con tro chua x
+		if (_strcmpi(T->data.tu, tucantim) == 0) 
+			return T;
 		else
 		{
-			if (strcmp((*T)->data.tu, tucantim) > 0) return timTu(&(*T)->pLeft, tucantim);
-			else return timTu(&(*T)->pRight, tucantim);
+			// x < T->data : tim tai cay con trai cua T
+			if (_strcmpi(T->data.tu, tucantim) > 0) 
+				return timTu(T->pLeft, tucantim);
+			// x < T->data : tim tai cay con phai cua T
+			else 
+				return timTu(T->pRight, tucantim);
 		}
 	}	
 }
@@ -195,7 +201,7 @@ node* timMinphai(node *a)
 	}
 	return a;
 } */
-// Cách 2
+// Xóa từ khỏi từ điển
 void Remove(tree* T, char tucanxoa[])
 {
 	if ((*T) != NULL)
@@ -213,10 +219,11 @@ void Remove(tree* T, char tucanxoa[])
 			// phan tu co 1 cay con trai
 			else if ((*T)->pRight == NULL)  
 				(*T) = (*T)->pLeft;         // cha->Left = cha->Left->Left = chau'
+			// phan tu co 2 cay con
 			else SearchStandFor(&pHuy, &(*T)->pRight);
 			free(pHuy);
+			printf("| Xóa từ %s thành công !\n", tucanxoa);
 		}
-		printf("| Xóa từ %s thành công !\n", tucanxoa);
 	}
 	else
 	{
@@ -237,40 +244,25 @@ void SearchStandFor(tree* pHuy, tree* pTT)
 		(*pTT) = (*pTT)->pRight;
 	}
 }
-//    - Tìm kiếm từ
-// Duyet LNR 
-tree* Timtu(tree* T, char tucantim[])
+//    - Sửa nghĩa của từ
+int capNhattu(tree T, char tucapnhat[])
 {
-	if ((*T) == NULL) return NULL;
+	tree a = timTu(T, tucapnhat);
+	if (a == NULL) return 0; // ko tim duoc tu
 	else
 	{
-		if (strcmp((*T)->data.tu, tucantim) > 0 ||
-			strcmp((*T)->data.loaitu, tucantim) > 0)
-			return Timtu(&(*T)->pLeft, tucantim);
-		else if (strcmp((*T)->data.tu, tucantim) < 0 ||
-			strcmp((*T)->data.loaitu, tucantim) < 0)
-			return Timtu(&(*T)->pRight, tucantim);
-		else return T;	
+		// Sua nghia va vi du cua tu
+		printf("| Nhập nghĩa mới của từ: ");                     
+		nhapChuoi(a->data.nghia, sizeof(a->data.nghia));
+		printf("| Nhập ví dụ sử dụng từ trong các câu cụ thể: ");
+		nhapChuoi(a->data.vidu, sizeof(a->data.vidu));
+		printf("| Sửa thông tin của từ thành công !\n");
+		return 1;
 	}
 }
-//    - Sửa nghĩa của từ
-int capNhattu(tree* T, char tucapnhat[])
-{
-		tree* a = Timtu(T, tucapnhat);
-		if (a == NULL) return 0;
-		else
-		{
-			printf("| Nhập nghĩa mới của từ: ");
-			nhapChuoi((*a)->data.nghia, sizeof((*a)->data.nghia));
-			printf("| Nhập ví dụ sử dụng từ trong các câu cụ thể: ");
-			nhapChuoi((*a)->data.vidu, sizeof((*a)->data.vidu));
-			printf("| Sửa thông tin của từ thành công !\n");
-			return 1;
-		}
-}
-//    - Duyệt BST để in danh sách từ
+//    - Duyệt BST để in danh sách từ ( Left - Node - Right )
 // Duyet LNR
-void LNRstdout(tree* T)
+void LNRstdout(tree* T)                     // ghi ra man hinh
 {
 	if ((*T) != NULL)
 	{
@@ -283,7 +275,7 @@ void LNRstdout(tree* T)
 		LNRstdout(&(*T)->pRight);
 	}
 }
-void LNRghifile(tree* T, FILE *f)
+void LNRghifile(tree* T, FILE *f)           // ghi ra file txt
 {
 	if ((*T) != NULL)
 	{
@@ -296,8 +288,16 @@ void LNRghifile(tree* T, FILE *f)
 		LNRghifile(&(*T)->pRight,f);
 	}
 }
-//printf("| %-15s | %-12s | %-22s | %-25s |\n", "Tu", "Loai tu", "Nghia", "Vi du");
 // In mot phan tu
+// ghi chu
+void ghiChu()
+{
+	printf("|---------------------------------------------------------------------------------------------------------------------|\n");
+	printf("|   GHI CHÚ                                                                                                           |\n");
+	printf("|   n: danh từ   v: động từ   adj: tính từ   adv: trạng từ   pn: đại từ   pps: giới từ   cont: liên từ                |\n");
+	printf("|---------------------------------------------------------------------------------------------------------------------|\n");
+}
+// In 1 phan tu
 void xuat1(tuDien a)
 {
 	printf("| %-15s | %-8s | %-36s | %-47s |\n", "Tu", "Loai tu", "Nghia", "Vi du");
@@ -306,14 +306,6 @@ void xuat1(tuDien a)
 			a.loaitu,
 			a.nghia,
 			a.vidu);
-
-}
-void ghiChu()
-{
-	printf("|---------------------------------------------------------------------------------------------------------------------|\n");
-	printf("|   GHI CHU:                                                                                                          |\n");
-	printf("|   n: danh tu   v: dong tu   adj: tinh tu   adv: trang tu   pn: dai tu   pps: gioi tu   cont: lien tu                |\n");
-	printf("|---------------------------------------------------------------------------------------------------------------------|\n");
 }
 // Ham ghi du lieu ra tep 
 int ghiFile(tree* T,const char* filename)
@@ -364,21 +356,21 @@ int docFile(tree* T, const char* filename)
 		tuDien td;
 		char line[300];
 		int count = 0, error = 0, landem = 0;
-		while (fgets(line, sizeof(line), f))
+		while (fgets(line, sizeof(line), f)) // ghi du lieu cua f vao chuoi line
 		{
-			line[strcspn(line, "\n")] = '\0';        // loai bo dau \n cuoi cung
-			int result = sscanf(line, "|%[^|]|%[^|]|%[^|]|%[^|]|\n",
-				td.tu,
+			line[strcspn(line, "\n")] = '\0';// loai bo dau \n cuoi cung
+			int result = sscanf(line, "|%[^|]|%[^|]|%[^|]|%[^|]|",
+				td.tu,       // chuan hoa chuoi line dua vao cac truong cua tuDien
 				td.loaitu,
 				td.nghia,
 				td.vidu);
-			if (result == 4)
+			if (result == 4) // nhan du 4 truong tuDien
 			{
-							trim(td.tu);                  // loai khoang trang dau va cuoi de dua vao node
-			trim(td.loaitu);
-			trim(td.nghia);
-			trim(td.vidu);
-				InsertNode(T, td);
+				trim(td.tu); // loai khoang trang dau va cuoi de dua vao node
+				trim(td.loaitu);
+				trim(td.nghia);
+				trim(td.vidu);
+				InsertNode(T, td);// dua vao cay nhi phan
 				count++;
 			}
 			else
@@ -390,6 +382,17 @@ int docFile(tree* T, const char* filename)
 		}
 		fclose(f);
 		printf("| So tu bi doc loi: %d\n", error);
-		return count; 
+		return count;
 	}
+}
+// Ham xoa toan bo danh sach
+void freeTree(tree * T)            // Giai phong theo thu tu LRN
+{
+	if ((*T) != NULL)
+	{
+		freeTree(&(*T)->pLeft);
+		freeTree(&(*T)->pRight);
+		free(*T);
+	}
+	*T = NULL;                     // Dat lai con tro tree
 }

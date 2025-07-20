@@ -1,5 +1,10 @@
-| apple     | n    | qua tao     | This is an apple         |
-| write     | v    | viet        | She writes a letter      |
-| beautiful | adj  | dep         | She is beautiful         |
-| in        | pps  | trong       | The book is in the bag   |
-| I         | pn   | toi         | I love you               |
+| eat             | v        | an                                   | i eat breakfast at 7 a.m.                       |
+| dog             | n        | con cho                              | the dog is playing in the yard                  |
+| beautiful       | adj      | xinh dep                             | she is a beautiful girl                         |
+| quickly         | adv      | nhanh chong                          | he runs quickly to catch the bus                |
+| they            | pn       | ho                                   | they are my friends                             |
+| under           | pps      | duoi                                 | the shoes are under the bed                     |
+| book            | n        | quyen sach                           | i read a book every night                       |
+| run             | v        | chay                                 | he runs every morning                           |
+| we              | pn       | chung toi                            | we are going to the market                      |
+| near            | pps      | gan                                  | the school is near my house                     |

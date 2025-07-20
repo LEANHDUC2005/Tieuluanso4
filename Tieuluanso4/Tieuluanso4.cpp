@@ -8,28 +8,28 @@ int main()
 {
 	SetConsoleOutputCP(65001);
 	char username[20];
-	printf("|=========================== TU DIEN ANH VIET ============================|\n");
-	printf("| Nhap ten cua ban:");
+	printf("|=========================== TỪ ĐIỂN ANH VIỆT ============================|\n");
+	printf("| Nhập tên của bạn:");
 	nhapChuoi(username, sizeof(username));
-	printf("\n| CHAO MUNG ! %s\n", username);
+	printf("\n| CHÀO MỪNG ! %s\n", username);
 	int choice;
 	do
 	{
 		printf("\n|=========================================================================|\n");
-		printf("|                                Cong cu                                  |\n");
+		printf("|                                Công cụ                                  |\n");
 		printf("|=========================================================================|\n");
-		printf("|       [1].Them tu vao tu dien     |          [2].Tra cuu tu dien        |\n");
+		printf("|       [1].Thêm từ vào từ điển     |          [2].Tra cứu từ điển        |\n");
 		printf("|___________________________________|_____________________________________|\n");
 		printf("|                                   |                                     |\n");
-		printf("|       [3].Xoa tu khoi tu dien     |          [4].Sua nghia cua tu       |\n");
+		printf("|       [3].Xóa từ khỏi từ điển     |          [4].Sửa nghĩa của từ       |\n");
 		printf("|___________________________________|_____________________________________|\n");
 		printf("|                                   |                                     |\n");
-		printf("|       [5].Danh sach tu dien       |          [6].Doc tu dien tu file    |\n");
+		printf("|       [5].Danh sach tu dien       |          [6].Đọc từ điển từ file    |\n");
 		printf("|___________________________________|_____________________________________|\n");
 		printf("|                                   |                                     |\n");
-		printf("|       [7].Ghi tu dien ra file     |          [8].Thoat tu dien          |\n");
+		printf("|       [7].Ghi từ điển ra file     |          [8].Thoát từ điển          |\n");
 		printf("|___________________________________|_____________________________________|\n");
-		printf("| Nhap lua chon cua ban [1-9]:");
+		printf("| Nhập lựa chọn của bạn [1-9]:");
 		scanf_s("%d", &choice);
 		while (getchar() != '\n');
 		switch (choice)
@@ -37,7 +37,7 @@ int main()
 			// Them tu vao tu dien
 		case 1:
 		{
-			printf("| Da chon: [Them tu]\n");
+			printf("| Đã chọn: [Thêm từ]\n");
 			themTu(&T);
 			break;
 		}
@@ -45,20 +45,19 @@ int main()
 		case 2:
 		{
 			char tucantim[50];
-			printf("| Da chon: [Tra cuu]\n");
-			printf("| Nhap tu can tra cuu :");
+			printf("| Đã chọn: [Tra cứu]\n");
+			printf("| Nhập từ cần tra cứu :");
 			nhapChuoi(tucantim, sizeof(tucantim));
-			node* result = timTu(&T, tucantim);
+			tree result = timTu(T, tucantim);
 			if (result == NULL)
 			{
-				printf("| Khong ton tai tu %s trong tu dien !\n", tucantim);
+				printf("| Không tồn tại từ %s trong từ điển !\n", tucantim);
 			}
 			else
 			{
 				printf("|=====================================================================================================================|\n");
 				xuat1(result->data);
 				ghiChu();
-				printf("|_____________________________________________________________________________________________________________________|\n");
 			}
 			break;
 		}
@@ -66,8 +65,8 @@ int main()
 		case 3:
 		{
 			char tucanxoa[50];
-			printf("| Da chon : [Xoa tu]\n");
-			printf("| Nhap tu can xoa khoi tu dien:");
+			printf("| Đã chọn : [Xóa từ]\n");
+			printf("| Nhập từ cần xóa khỏi từ điển:");
 			nhapChuoi(tucanxoa, sizeof(tucanxoa));
 			/* dungcho node* xoaTu(tree* T, char tucanxoa[])
 			if (xoaTu(&T, tucanxoa) == NULL)
@@ -84,25 +83,25 @@ int main()
 		// Sua nghia cua tu
 		case 4:
 		{
-			printf("| Da chon: [Sua nghia cua tu]\n");
+			printf("| Đã chọn: [Sửa nghĩa của từ]\n");
 			char tucansua[50];
-			printf("| Nhap tu can sua: ");
+			printf("| Nhập từ cần sửa: ");
 			nhapChuoi(tucansua, sizeof(tucansua));
-			if (!capNhattu(&T, tucansua))
+			if (!capNhattu(T, tucansua))
 			{
-				printf("| Tu %s khong ton tai trong tu dien!\n", tucansua);
+				printf("| Từ %s không tồn tại trong từ điển !\n", tucansua);
 			}
 			else
 			{
-				printf("| Cap nhat thanh cong!\n");
+				printf("| Cập nhật thành công !\n");
 			}
 			break;
 		}
 		// Xuat danh sach tu dien
 		case 5:
 		{
-			printf("| Da chon [Xuat danh sach]\n");
-			printf("|================================================== DANH SACH TU DIEN ================================================|\n");
+			printf("| Đã chọn [Xuất danh sách]\n");
+			printf("|================================================== DANH SÁCH TỪ ĐIỂN ================================================|\n");
 			ghiChu();
 			printf("| %-15s | %-8s | %-36s | %-47s |\n", "Tu", "Loai tu", "Nghia", "Vi du");
 			LNRstdout(&T);
@@ -112,44 +111,45 @@ int main()
 		// Doc tu dien tu tep
 		case 6:
 		{
-			printf("| Da chon [Doc tu dien tu file]\n");
+			printf("| Đã chọn [Đọc từ điển từ file]\n");
 			char filename[50];
-			printf("| Nhap file muon doc du lieu: ");
+			printf("| Nhập file muốn đọc dữ liệu: ");
 			nhapChuoi(filename, sizeof(filename));
 			int result = docFile(&T, filename);
 			if (!result)
 			{
-				printf("| File %s khong ton tai, vui long kiem tra ten file !\n", filename);
+				printf("| File %s không tồn tại, vui lòng thực hiện với file khác !\n", filename);
 			}
 			else
 			{
-				printf("| Doc file thanh cong !\n");
-				printf("| So tu da doc : %d", result);
+				printf("| Đọc file thành công !\n");
+				printf("| Số từ đã đọc được : %d", result);
 			}
 			break;
 		}
 		// Ghi tu dien ra tep
 		case 7:
 		{
-			printf("| Da chon [Ghi tu dien ra file]\n");
+			printf("| Đã chọn [Ghi từ điển ra file]\n");
 			char filename[50];
-			printf("| Nhap file muon ghi du lieu: ");
+			printf("| Nhập tên file muốn ghi dữ liệu: ");
 			nhapChuoi(filename, sizeof(filename));
 			if (!ghiFile(&T, filename))
 			{
-				printf("| File %s khong ton tai, vui long kiem tra ten file !\n", filename);
+				printf("| File %s không tồn tại, vui lòng thực hiện với file khác !\n", filename);
 			}
 			else
 			{
-				printf("| Ghi file thanh cong !\n");
+				printf("| Ghi file thành công !\n");
 			}
 			break;
 		}
 		case 8: break;
-		default: printf("| Lua chon khong hop le ! Vui long nhap lai lua chon cua ban.\n");
+		default: printf("| Lựa chọn không hợp lệ ! Vui lòng nhập lại lựa chọn của bạn.\n");
 		}
 	} while (choice != 8);
-	printf("|========================================= TAM BIET =======================================|\n");
+	printf("|========================================= TẠM BIỆT =======================================|\n");
+	freeTree(&T);
 	return 0;
 }
 
