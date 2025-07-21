@@ -1,5 +1,6 @@
 ﻿#pragma once
 #define _CRT_SECURE_NO_WARNINGS
+#define MAX 100
 #include <stdio.h>
 #include <string.h>
 // 1. Định nghĩa struct TuDien, Node
@@ -18,12 +19,24 @@ typedef struct
 	char nghia[150];
 	char vidu[100];
 }tuDien;
+typedef struct Stack
+{
+	tuDien data[MAX];
+	int top;
+}Stack;
 typedef struct node
 {
 	tuDien data;
 	node *pLeft, *pRight;
 }node, *tree;
+extern Stack S;
 extern tree T;
+// Ham thao tac tren Stack
+int isEmpty(Stack *S);
+int isFull(Stack *S);
+void initStack(Stack *S);
+void push(Stack *S, node* a);
+tuDien pop(Stack *S);
 // 2. Các hàm xử lý BST:
 int kiemtrachu(char str[]);
 void nhapChuoi(char str[], int size);

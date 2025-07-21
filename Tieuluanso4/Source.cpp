@@ -5,7 +5,9 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include "Header.h"
+Stack S;
 tree T = NULL;
+// Cac ham xu ly chuoi, kiem tra du lieu dau vao
 int kiemtrachu(char str[])
 {
 	int dem = 0;
@@ -48,6 +50,54 @@ int kiemtraloaitu(char str[])
 		}
 		return 0;
 }
+// Khoi tao Stack
+void initStack(Stack *S)
+{
+	S->top = -1;
+}
+int isEmpty(Stack *S)
+{
+	return (S->top == -1);
+}
+int isFull(Stack *S)
+{
+	return (S->top == MAX-1);
+}
+void push(Stack *S, node* a)
+{
+	if (!isFull(S))
+	{
+		S -> top++;
+		strcpy(S->data[S->top].tu, a->data.tu);
+		strcpy(S->data[S->top].loaitu, a->data.loaitu);
+		strcpy(S->data[S->top].nghia, a->data.nghia);
+		strcpy(S->data[S->top].vidu, a->data.vidu);
+	}
+	else
+	{
+		printf("Danh sach da day!\n");
+		return;
+	}
+}
+tuDien pop(Stack* S)
+{
+	tuDien x;
+	if (!isEmpty(S))
+	{
+		x = S->data[S->top];
+		S->top--;
+		return x;
+	}
+	else
+	{
+		strcpy(x.tu, "");
+		strcpy(x.loaitu, "");
+		strcpy(x.nghia, "");
+		strcpy(x.vidu,"");
+		return x;
+	}
+}
+// Them node vao BST
 int InsertNode(tree* T, tuDien x)
 {
 	if (*T == NULL)
@@ -300,7 +350,6 @@ void ghiChu()
 // In 1 phan tu
 void xuat1(tuDien a)
 {
-	printf("| %-15s | %-8s | %-36s | %-47s |\n", "Tu", "Loai tu", "Nghia", "Vi du");
 	printf("| %-15s | %-8s | %-36s | %-47s |\n",
 			a.tu,
 			a.loaitu,

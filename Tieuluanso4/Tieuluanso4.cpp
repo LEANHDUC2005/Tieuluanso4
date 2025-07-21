@@ -6,6 +6,7 @@
 #include "Header.h"
 int main()
 {
+	initStack(&S);
 	SetConsoleOutputCP(65001);
 	char username[20];
 	printf("|=========================== TỪ ĐIỂN ANH VIỆT ============================|\n");
@@ -27,9 +28,9 @@ int main()
 		printf("|       [5].Danh sach tu dien       |          [6].Đọc từ điển từ file    |\n");
 		printf("|___________________________________|_____________________________________|\n");
 		printf("|                                   |                                     |\n");
-		printf("|       [7].Ghi từ điển ra file     |          [8].Thoát từ điển          |\n");
+		printf("|       [7].Ghi từ điển ra file     |          [8].Xem lai tu da tra      |\n");
 		printf("|___________________________________|_____________________________________|\n");
-		printf("| Nhập lựa chọn của bạn [1-9]:");
+		printf("| Nhập lựa chọn của bạn [1-9] ( nhap 9 de thoat ):");
 		scanf_s("%d", &choice);
 		while (getchar() != '\n');
 		switch (choice)
@@ -48,14 +49,16 @@ int main()
 			printf("| Đã chọn: [Tra cứu]\n");
 			printf("| Nhập từ cần tra cứu :");
 			nhapChuoi(tucantim, sizeof(tucantim));
-			tree result = timTu(T, tucantim);
+			node* result = timTu(T, tucantim);
 			if (result == NULL)
 			{
 				printf("| Không tồn tại từ %s trong từ điển !\n", tucantim);
 			}
 			else
 			{
+				push(&S, result);
 				printf("|=====================================================================================================================|\n");
+				printf("| %-15s | %-8s | %-36s | %-47s |\n", "Tu", "Loai tu", "Nghia", "Vi du");
 				xuat1(result->data);
 				ghiChu();
 			}
@@ -144,10 +147,23 @@ int main()
 			}
 			break;
 		}
-		case 8: break;
-		default: printf("| Lựa chọn không hợp lệ ! Vui lòng nhập lại lựa chọn của bạn.\n");
+		// Xem lich cac tu da luu
+		case 8:
+		{
+			printf("| Da chon [Xem lai tu da tra]\n");
+			printf("|=================================================== LICH SU TIM KIEM ================================================|\n");
+			ghiChu();
+			printf("| %-15s | %-8s | %-36s | %-47s |\n", "Tu", "Loai tu", "Nghia", "Vi du");
+			while (!isEmpty(&S))
+			{
+				tuDien td = pop(&S);
+				xuat1(td);
+			}
+			printf("|---------------------------------------------------------------------------------------------------------------------|\n");
+		}break;
+		default: printf("| Lựa chọn không hợp lệ ! Vui lòng nhập lại lựa chọn của bạn.\n"); break;
 		}
-	} while (choice != 8);
+	} while (choice != 9);
 	printf("|========================================= TẠM BIỆT =======================================|\n");
 	freeTree(&T);
 	return 0;
