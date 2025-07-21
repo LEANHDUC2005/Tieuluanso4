@@ -75,4 +75,5 @@ int ghiFile(tree* T, const char* filename);
 void trim(char str[]);
 // Xoa toan bo danh sach
 void freeTree(tree* T);
+//    - Xoa lich su tim kiem
 void freeStack(Stack* S);

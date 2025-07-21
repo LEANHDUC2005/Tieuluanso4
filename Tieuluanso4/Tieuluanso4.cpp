@@ -49,14 +49,14 @@ int main()
 			printf("| Đã chọn: [Tra cứu]\n");
 			printf("| Nhập từ cần tra cứu :");
 			nhapChuoi(tucantim, sizeof(tucantim));
-			node* result = timTu(T, tucantim);
+			node* result = timTu(T, tucantim);  // con tro node chua tu tim duoc
 			if (result == NULL)
 			{
 				printf("| Không tồn tại từ %s trong từ điển !\n", tucantim);
 			}
 			else
 			{
-				push(&S, result);
+				push(&S, result); // Luu ket qua tim kiem vao stack
 				printf("|=====================================================================================================================|\n");
 				printf("| %-15s | %-8s | %-36s | %-47s |\n", "Tu", "Loai tu", "Nghia", "Vi du");
 				xuat1(result->data);
@@ -156,8 +156,8 @@ int main()
 			printf("| %-15s | %-8s | %-36s | %-47s |\n", "Tu", "Loai tu", "Nghia", "Vi du");
 			while (!isEmpty(&S))
 			{
-				tuDien td = pop(&S);
-				xuat1(td);
+				node* td = pop(&S);
+				xuat1(td->data);
 			}
 			printf("|---------------------------------------------------------------------------------------------------------------------|\n");
 		}break;
