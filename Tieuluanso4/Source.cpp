@@ -53,25 +53,31 @@ int kiemtraloaitu(char str[])
 // Khoi tao Stack
 void initStack(Stack *S)
 {
-	S->top = -1;
+	S->top = NULL;
 }
 int isEmpty(Stack *S)
 {
-	return (S->top == -1);
+	return (S->top == NULL);
 }
 int isFull(Stack *S)
 {
-	return (S->top == MAX-1);
+	return 1;
 }
 void push(Stack *S, node* a)
 {
 	if (!isFull(S))
 	{
-		S -> top++;
-		strcpy(S->data[S->top].tu, a->data.tu);
-		strcpy(S->data[S->top].loaitu, a->data.loaitu);
-		strcpy(S->data[S->top].nghia, a->data.nghia);
-		strcpy(S->data[S->top].vidu, a->data.vidu);
+		Stacknode* p = (Stacknode*)malloc(sizeof(Stacknode));
+		if (p == NULL)
+		{
+			printf("Không đủ dung lượng!\n");
+		}
+		else
+		{
+			p->treenode = a;
+			p->next = S->top;
+			S->top = p;
+		}
 	}
 	else
 	{
@@ -79,22 +85,18 @@ void push(Stack *S, node* a)
 		return;
 	}
 }
-tuDien pop(Stack* S)
+node* pop(Stack* S)
 {
-	tuDien x;
+	node* x;
 	if (!isEmpty(S))
 	{
-		x = S->data[S->top];
+		x = S->top->treenode;
 		S->top--;
 		return x;
 	}
 	else
 	{
-		strcpy(x.tu, "");
-		strcpy(x.loaitu, "");
-		strcpy(x.nghia, "");
-		strcpy(x.vidu,"");
-		return x;
+		return NULL;
 	}
 }
 // Them node vao BST
@@ -435,7 +437,7 @@ int docFile(tree* T, const char* filename)
 	}
 }
 // Ham xoa toan bo danh sach
-void freeTree(tree * T)            // Giai phong theo thu tu LRN
+void freeTree(tree * T) // Giai phong theo thu tu LRN
 {
 	if ((*T) != NULL)
 	{
@@ -443,5 +445,17 @@ void freeTree(tree * T)            // Giai phong theo thu tu LRN
 		freeTree(&(*T)->pRight);
 		free(*T);
 	}
-	*T = NULL;                     // Dat lai con tro tree
+	*T = NULL;   // Dat lai con tro tree
+}
+// Ham xoa toan bo ket qua tim kiem Stack
+void freeStack(Stack* S)
+{
+	Stacknode* temp = S->top;
+	while (temp != NULL)
+	{
+		Stacknode* tempnext = temp->next; // Luu node tiep theo
+		free(temp);         // Giai phong node hien tai
+		temp = tempnext;    // Cap nhat lai node hien tai 
+	}
+	S->top = NULL;  // Dat lai con tro top
 }
