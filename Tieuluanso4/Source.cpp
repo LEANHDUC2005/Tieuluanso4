@@ -7,6 +7,13 @@
 #include "Header.h"
 Stack S;
 tree T = NULL;
+tuLoai typelist[] = { {"danh tu","n"},
+					{"dong tu","v"},
+					{"tinh tu","adj"},
+					{"trang tu","adv"},
+					{"dai tu","pn"},
+					{"gioi tu","pps"},
+					{"lien tu","cont"} };
 // Cac ham xu ly chuoi, kiem tra du lieu dau vao
 int kiemtrachu(char str[])
 {
@@ -31,25 +38,31 @@ void nhapChuoi(char str[], int size)
 	fgets(str, size, stdin);
 	str[strcspn(str, "\n")] = '\0';
 }
-int kiemtraloaitu(char str[])
+int kiemtraloaitu(char str[], tuLoai typelist[])
 {
-		tuLoai typelist[] = { {"danh tu","n"},
-							{"dong tu","v"},
-							{"tinh tu","adj"},
-							{"trang tu","adv"},
-							{"dai tu","pn"},
-							{"gioi tu","pps"},
-							{"lien tu","cont"} };
 		for (int i = 0; i < sizeof(typelist)/sizeof(typelist[0]) ; i++)
 		{
 			if (_strcmpi(str, typelist[i].tenDaydu) == 0)
 			{
-				strcpy(str, typelist[i].kyhieu);
-				return 1;
+				return i;
 			}
 		}
-		return 0;
+		return -1;
 }
+// CHUYEN LOAI TU DAY DU THANH VIET TAT
+/* void switchType(char str[], tuLoai typelist[])
+{
+	int vitri = kiemtraloaitu(str, typelist);
+	if (vitri < 0)
+	{
+		printf("Loại từ không hợp lệ !\n");
+		return;
+	}
+	else
+	{
+		strcpy(str, typelist[vitri].kyhieu);
+	}
+} */
 // Khoi tao Stack
 void initStack(Stack *S)
 {
@@ -61,7 +74,7 @@ int isEmpty(Stack *S)
 }
 int isFull(Stack *S)
 {
-	return 1;
+	return 0;
 }
 void push(Stack *S, node* a)
 {
@@ -81,22 +94,20 @@ void push(Stack *S, node* a)
 	}
 	else
 	{
-		printf("Danh sach da day!\n");
+		printf("Danh sách đã đầy!\n");
 		return;
 	}
 }
 node* pop(Stack* S)
 {
-	node* x;
-	if (!isEmpty(S))
-	{
-		x = S->top->treenode;
-		S->top--;
-		return x;
-	}
+	if (isEmpty(S)) return NULL;
 	else
 	{
-		return NULL;
+		node* x = S->top->treenode;
+		Stacknode* temp = S->top;
+		S->top = S->top->next;
+		free(temp);
+		return x;
 	}
 }
 // Them node vao BST
@@ -153,7 +164,7 @@ void themTu(tree* T)
 			printf("| : ");
 			nhapChuoi(a.loaitu, sizeof(a.loaitu));
 			if (strcmp(a.loaitu, "0") == 0) return;
-			if (!kiemtraloaitu(a.loaitu))  // neu loai tu ko dung voi dinh dang
+			if (kiemtraloaitu(a.loaitu, typelist) == -1)  // neu loai tu ko dung voi dinh dang
 			{ 
 				printf("| LỖI ! Vui lòng nhập đúng loại từ\n");
 				continue;
@@ -180,7 +191,7 @@ void themTu(tree* T)
 	}
 }
 //    - Tìm kiếm từ
-node* timTu(tree T, char tucantim[])
+node* timTuAV(tree T, char tucantim[])
 {
 	if (T == NULL) return NULL;
 	else
@@ -192,12 +203,27 @@ node* timTu(tree T, char tucantim[])
 		{
 			// x < T->data : tim tai cay con trai cua T
 			if (_strcmpi(T->data.tu, tucantim) > 0) 
-				return timTu(T->pLeft, tucantim);
+				return timTuAV(T->pLeft, tucantim);
 			// x < T->data : tim tai cay con phai cua T
 			else 
-				return timTu(T->pRight, tucantim);
+				return timTuAV(T->pRight, tucantim);
 		}
 	}	
+}
+// Tim tu Viet Anh - Duyen toan bo cay NLR
+node* timTuVA(tree T, char tucantim[])
+{
+		if (T == NULL) return NULL;
+		else
+		{
+			if (strstr(T->data.nghia, tucantim) != NULL) return T;
+			else
+			{
+				node* ketquatrai = timTuVA(T->pLeft, tucantim);
+				if (ketquatrai != NULL) return ketquatrai;
+				else return timTuVA(T->pRight, tucantim);			
+			}
+		}
 }
 //     - Xóa từ khỏi BST
 /*
@@ -299,7 +325,7 @@ void SearchStandFor(tree* pHuy, tree* pTT)
 //    - Sửa nghĩa của từ
 int capNhattu(tree T, char tucapnhat[])
 {
-	tree a = timTu(T, tucapnhat);
+	tree a = timTuAV(T, tucapnhat);
 	if (a == NULL) return 0; // ko tim duoc tu
 	else
 	{
@@ -318,12 +344,11 @@ void LNRstdout(tree* T)                     // ghi ra man hinh
 {
 	if ((*T) != NULL)
 	{
-		LNRstdout(&(*T)->pLeft);
-		fprintf(stdout,"| %-15s | %-8s | %-36s | %-47s |\n",
+		LNRstdout(&(*T)->pLeft);		
+		fprintf(stdout,"| %-15s | %-10s | %-36s |\n",
 			(*T)->data.tu,
 			(*T)->data.loaitu,
-			(*T)->data.nghia,
-			(*T)->data.vidu);
+			(*T)->data.nghia);
 		LNRstdout(&(*T)->pRight);
 	}
 }
@@ -332,7 +357,7 @@ void LNRghifile(tree* T, FILE *f)           // ghi ra file txt
 	if ((*T) != NULL)
 	{
 		LNRghifile(&(*T)->pLeft,f);
-		fprintf(f,"| %-15s | %-8s | %-36s | %-47s |\n",
+		fprintf(f,"|%s|%s|%s|%s|\n",
 			(*T)->data.tu,
 			(*T)->data.loaitu,
 			(*T)->data.nghia,
@@ -352,7 +377,7 @@ void ghiChu()
 // In 1 phan tu
 void xuat1(tuDien a)
 {
-	printf("| %-15s | %-8s | %-36s | %-47s |\n",
+	printf("| %-15s | %-10s | %-36s |\n",
 			a.tu,
 			a.loaitu,
 			a.nghia,

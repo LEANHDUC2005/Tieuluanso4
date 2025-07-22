@@ -16,20 +16,17 @@ int main()
 	int choice;
 	do
 	{
-		printf("\n|=========================================================================|\n");
-		printf("|                                Công cụ                                  |\n");
-		printf("|=========================================================================|\n");
-		printf("|       [1].Thêm từ vào từ điển     |          [2].Tra cứu từ điển        |\n");
-		printf("|___________________________________|_____________________________________|\n");
-		printf("|                                   |                                     |\n");
-		printf("|       [3].Xóa từ khỏi từ điển     |          [4].Sửa nghĩa của từ       |\n");
-		printf("|___________________________________|_____________________________________|\n");
-		printf("|                                   |                                     |\n");
-		printf("|       [5].Danh sach tu dien       |          [6].Đọc từ điển từ file    |\n");
-		printf("|___________________________________|_____________________________________|\n");
-		printf("|                                   |                                     |\n");
-		printf("|       [7].Ghi từ điển ra file     |          [8].Xem lai tu da tra      |\n");
-		printf("|___________________________________|_____________________________________|\n");
+	  printf("\n|=============================================================================|\n");
+		printf("|                                Công cụ                                      |\n");
+		printf("|=============================================================================|\n");
+		printf("| [1].Thêm từ vào từ điển | [2].Tra từ Anh Việt Anh | [3].Xóa từ khỏi từ điển |\n");
+		printf("|_________________________|_________________________|_________________________|\n");
+		printf("|                         |                         |                         |\n");
+		printf("| [4].Sửa nghĩa của từ    | [5].Danh sách từ        | [6].Đọc từ điển từ file |\n");
+		printf("|_________________________|_________________________|_________________________|\n");
+		printf("|                         |                         |                         |\n");
+		printf("| [7].Ghi từ điển ra file | [8].Lịch sử tìm kiếm    | [9].Thoát từ điển       |\n");        
+		printf("|_________________________|_________________________|_________________________|\n");
 		printf("| Nhập lựa chọn của bạn [1-9] ( nhap 9 de thoat ):");
 		scanf_s("%d", &choice);
 		while (getchar() != '\n');
@@ -45,24 +42,64 @@ int main()
 		// Tim kiem tu
 		case 2:
 		{
+			int searchChoice;
 			char tucantim[50];
 			printf("| Đã chọn: [Tra cứu]\n");
+			printf("| Chọn loại từ điển:\n");
+			do
+			{
+				printf("| [1].Từ điển Anh - Việt\n");
+				printf("| [2].Từ điển Việt - Anh\n");
+				printf("| Lựa chọn của bạn [1-2]: "); // CHECKPOINT: TAO TINH NANG ANH - VIET VA TIM KIEM TREN LICH SU TIM KIEM
+				scanf_s("%d", &searchChoice);
+				while (getchar() != '\n');
+				if (searchChoice > 2 || searchChoice < 1)
+				{
+					printf("| Thao tác không hợp lệ. Vui lòng thử lại !\n");
+				}
+				else break;
+			} while (true);
 			printf("| Nhập từ cần tra cứu :");
 			nhapChuoi(tucantim, sizeof(tucantim));
-			node* result = timTu(T, tucantim);  // con tro node chua tu tim duoc
-			if (result == NULL)
-			{
-				printf("| Không tồn tại từ %s trong từ điển !\n", tucantim);
+			if (searchChoice == 1) { // Che do Anh Viet
+				node* result = timTuAV(T, tucantim);  // con tro node chua tu tim duoc
+				if (result == NULL)
+				{
+					printf("| Không tồn tại từ %s trong từ điển !\n", tucantim);
+				}
+				else
+				{
+					push(&S, result); // Luu ket qua tim kiem vao stack
+					// printf("|=====================================================================================================================|\n");
+					// printf("| %-15s | %-8s | %-36s | %-47s |\n", "Tu", "Loai tu", "Nghia", "Vi du"); fix
+					printf("| %s\n", result->data.tu);
+					printf("|---------------\n");
+					printf("| %s\n", result->data.loaitu);
+					printf("| %s\n", result->data.nghia);
+					printf("| %s\n", result->data.vidu);
+				}break;
 			}
-			else
+			else // Che do Viet Anh
 			{
-				push(&S, result); // Luu ket qua tim kiem vao stack
-				printf("|=====================================================================================================================|\n");
-				printf("| %-15s | %-8s | %-36s | %-47s |\n", "Tu", "Loai tu", "Nghia", "Vi du");
-				xuat1(result->data);
-				ghiChu();
+				// CODE HERE
+				node* result = timTuVA(T, tucantim);
+				if (result == NULL)
+				{
+					printf("| Không tồn tại từ %s trong từ điển !\n", tucantim);
+				}
+				else
+				{
+					push(&S, result); // Luu ket qua tim kiem vao stack
+					// printf("|=====================================================================================================================|\n");
+					// printf("| %-15s | %-8s | %-36s | %-47s |\n", "Tu", "Loai tu", "Nghia", "Vi du"); fix
+					printf("| %s\n", tucantim);
+					printf("|---------------\n");
+					printf("| %s\n", result->data.loaitu);
+					printf("| %s\n", result->data.tu);
+					printf("| %s\n", result->data.vidu);
+				}
+				break;
 			}
-			break;
 		}
 		// Xoa tu khoi tu dien
 		case 3:
@@ -78,9 +115,9 @@ int main()
 			}
 			else
 			{
-				printf("| Xoa thanh cong !\n"); 
+				printf("| Xoa thanh cong !\n");
 			}*/
-		    Remove(&T, tucanxoa);
+			Remove(&T, tucanxoa);
 			break;
 		}
 		// Sua nghia cua tu
@@ -104,11 +141,12 @@ int main()
 		case 5:
 		{
 			printf("| Đã chọn [Xuất danh sách]\n");
-			printf("|================================================== DANH SÁCH TỪ ĐIỂN ================================================|\n");
-			ghiChu();
-			printf("| %-15s | %-8s | %-36s | %-47s |\n", "Tu", "Loai tu", "Nghia", "Vi du");
+			printf("|========================= DANH SÁCH TỪ ĐIỂN =========================|\n");
+			printf("| %-15s | %-10s | %-36s |\n","Tu", "Loai tu","Nghia");
 			LNRstdout(&T);
-			ghiChu();
+			//ghiChu();
+			printf("|---------------------------------------------------------------------|\n");
+			printf("\n");
 			break;
 		}
 		// Doc tu dien tu tep
@@ -150,22 +188,33 @@ int main()
 		// Xem lich cac tu da luu
 		case 8:
 		{
-			printf("| Da chon [Xem lai tu da tra]\n");
-			printf("|=================================================== LICH SU TIM KIEM ================================================|\n");
-			ghiChu();
-			printf("| %-15s | %-8s | %-36s | %-47s |\n", "Tu", "Loai tu", "Nghia", "Vi du");
+			printf("| Da chon [Xem lai tu da tra]\n");      // FIX
+			printf("|========================== LỊCH SỬ TÌM KIẾM =========================|\n");
+			printf("| %-15s | %-10s | %-36s |\n", "Tu", "Loai tu", "Nghia");
+			Stack temp;
+			initStack(&temp);
 			while (!isEmpty(&S))
 			{
 				node* td = pop(&S);
-				xuat1(td->data);
+				if (td != NULL)
+					xuat1(td->data);
+				push(&temp, td);
 			}
-			printf("|---------------------------------------------------------------------------------------------------------------------|\n");
-		}break;
+			while (!isEmpty(&temp))
+			{
+				node* tdback = pop(&temp);
+				push(&S, tdback);
+			}
+			printf("|---------------------------------------------------------------------|\n");
+			freeStack(&temp);		
+			break;
+		}
 		default: printf("| Lựa chọn không hợp lệ ! Vui lòng nhập lại lựa chọn của bạn.\n"); break;
 		}
 	} while (choice != 9);
 	printf("|========================================= TẠM BIỆT =======================================|\n");
 	freeTree(&T);
+	freeStack(&S);
 	return 0;
 }
 

@@ -60,7 +60,8 @@ void themTu(tree* T);
 void Remove(tree* T, char tucanxoa[]);
 void SearchStandFor(tree* pHuy, tree* pTT);
 //    - Tìm kiếm từ
-node* timTu(tree T, char tucantim[]);
+node* timTuAV(tree T, char tucantim[]);
+node* timTuVA(tree T, char tucantim[]);
 //    - Sửa nghĩa của từ
 int capNhattu(tree T, char tucapnhat[]);
 //    - Duyệt BST để in danh sách từ
@@ -71,6 +72,7 @@ void ghiChu();
 int docFile(tree* T, const char* filename);
 //    - Ghi file
 int ghiFile(tree* T, const char* filename);
+void LNRghifile(tree* T, FILE* f);
 //    - Bỏ khoảng cách dầu và cuối của chuỗi để đưa vào struct
 void trim(char str[]);
 // Xoa toan bo danh sach

@@ -1,10 +1,20 @@
-| eat             | v        | an                                   | i eat breakfast at 7 a.m.                       |
-| dog             | n        | con cho                              | the dog is playing in the yard                  |
-| beautiful       | adj      | xinh dep                             | she is a beautiful girl                         |
-| quickly         | adv      | nhanh chong                          | he runs quickly to catch the bus                |
-| they            | pn       | ho                                   | they are my friends                             |
-| under           | pps      | duoi                                 | the shoes are under the bed                     |
-| book            | n        | quyen sach                           | i read a book every night                       |
-| run             | v        | chay                                 | he runs every morning                           |
-| we              | pn       | chung toi                            | we are going to the market                      |
-| near            | pps      | gan                                  | the school is near my house                     |
+|eat|dong tu|an|i eat breakfast at 7 a.m.|
+|dog|danh tu|con cho|the dog is playing in the yard|
+|beautiful|tinh tu|xinh dep|she is a beautiful girl|
+|quickly|trang tu|nhanh chong|he runs quickly to catch the bus|
+|they|dai tu|ho|they are my friends|
+|under|gioi tu|duoi|the shoes are under the bed|
+|book|danh tu|quyen sach|i read a book every night|
+|run|dong tu|chay|he runs every morning|
+|we|dai tu|chung toi|we are going to the market|
+|near|gioi tu|gan|the school is near my house|
+|student|danh tu|hoc sinh|the student studies hard|
+|teacher|danh tu|giao vien|the teacher explains the lesson|
+|happy|tinh tu|vui ve|she looks very happy today|
+|speak|dong tu|noi|i speak english and vietnamese|
+|in|gioi tu|trong|the keys are in the drawer|
+|apple|danh tu|qua tao|she eats an apple every day|
+|fast|tinh tu|nhanh|the car is very fast|
+|jump|dong tu|nhay|the cat jumps on the table|
+|cold|tinh tu|lanh|it is very cold this morning|
+|you|dai tu|ban|you are my best friend|
