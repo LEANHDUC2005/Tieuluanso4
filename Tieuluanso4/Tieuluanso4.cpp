@@ -90,8 +90,6 @@ int main()
 				else
 				{
 					push(&S, result); // Luu ket qua tim kiem vao stack
-					// printf("|=====================================================================================================================|\n");
-					// printf("| %-15s | %-8s | %-36s | %-47s |\n", "Tu", "Loai tu", "Nghia", "Vi du"); fix
 					printf("| %s\n", tucantim);
 					printf("|---------------\n");
 					printf("| %s\n", result->data.loaitu);

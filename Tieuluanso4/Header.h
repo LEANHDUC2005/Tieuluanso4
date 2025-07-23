@@ -48,6 +48,7 @@ node* pop(Stack* S);
 // 2. Các hàm xử lý BST:
 int kiemtrachu(char str[]);
 void nhapChuoi(char str[], int size);
+void switchType(char str[], tuLoai typelist[]);
 //    - Tạo node mới
 int InsertNode(tree* T, tuDien x);
 //    - Thêm từ vào BST

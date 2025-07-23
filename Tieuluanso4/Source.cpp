@@ -40,7 +40,7 @@ void nhapChuoi(char str[], int size)
 }
 int kiemtraloaitu(char str[], tuLoai typelist[])
 {
-		for (int i = 0; i < sizeof(typelist)/sizeof(typelist[0]) ; i++)
+		for (int i = 0; i < sizeof(*typelist)/sizeof(typelist[0]) ; i++)
 		{
 			if (_strcmpi(str, typelist[i].tenDaydu) == 0)
 			{
@@ -50,7 +50,7 @@ int kiemtraloaitu(char str[], tuLoai typelist[])
 		return -1;
 }
 // CHUYEN LOAI TU DAY DU THANH VIET TAT
-/* void switchType(char str[], tuLoai typelist[])
+void switchType(char str[], tuLoai typelist[])
 {
 	int vitri = kiemtraloaitu(str, typelist);
 	if (vitri < 0)
@@ -62,7 +62,7 @@ int kiemtraloaitu(char str[], tuLoai typelist[])
 	{
 		strcpy(str, typelist[vitri].kyhieu);
 	}
-} */
+} 
 // Khoi tao Stack
 void initStack(Stack *S)
 {
@@ -380,8 +380,7 @@ void xuat1(tuDien a)
 	printf("| %-15s | %-10s | %-36s |\n",
 			a.tu,
 			a.loaitu,
-			a.nghia,
-			a.vidu);
+			a.nghia);
 }
 // Ham ghi du lieu ra tep 
 int ghiFile(tree* T,const char* filename)
@@ -461,6 +460,69 @@ int docFile(tree* T, const char* filename)
 		return count;
 	}
 }
+void deletechar(char str[], char c)
+{
+	int i = 0, j = 0;
+	while (str[i] != '\0')
+	{
+		if (str[i] != c)
+		{
+			str[j++] = str[i];
+		}
+		i++;
+	}
+	str[j] = '\0';
+}
+/*
+int docFile(tree* T, const char* filename)
+{
+	FILE* f = fopen(filename, "r");
+	if (f == NULL)
+	{
+		return 0;
+	}
+	else
+	{
+		tuDien td;
+		char line[300];
+		int count = 0, error = 0, landem = 0;
+		while (fgets(line, sizeof(line), f)) // ghi du lieu cua f vao chuoi line
+		{
+			// Tach thanh 4 truong
+			// |you|dai tu|ban|you are my best friend|
+			char* start = line;
+			char* p1 = strchr(start+1, '|'); // tu
+			char* p2 = strchr(p1+1, '|');    // loai tu
+			char* p3 = strchr(p2+1, '|');    // nghia
+			char* p4 = strchr(p3+1, '|');    // vidu
+			char* token = strtok(p4 + 1, "\n"); // phan con lai
+			if( p1 != NULL && p2 != NULL && p3 != NULL && p4 != NULL ) 
+			{
+				int len1 = p1 - (start+1); // '|' - 'y' 
+				int len2 = p2 - (p1 + 1);  // '|' - 'd'
+				int len3 = p3 - (p2 + 1);  // "|' - 'b'
+				int len4 = p4 - (p3 + 1);  // '|' - 'y'
+				deletechar(token, '|');
+				strcpy(td.tu, start + 1); td.tu[len1] = '\0';
+				strcpy(td.loaitu, p1 + 1); td.loaitu[len2] = '\0';
+				strcpy(td.nghia, p2 + 1); td.nghia[len3] = '\0';
+				strcpy(td.vidu, p3 + 1); td.vidu[len4] = '\0';
+
+				InsertNode(T, td);// dua vao cay nhi phan
+				count++;
+			}
+			else
+			{
+				error++;
+				printf("Dong %d bi loi: \"%s\" (result = %d)\n", landem, line, result);
+			}
+			landem++;
+		}
+		fclose(f);
+		printf("| So tu bi doc loi: %d\n", error);
+		return count;
+	}
+}*/
 // Ham xoa toan bo danh sach
 void freeTree(tree * T) // Giai phong theo thu tu LRN
 {
